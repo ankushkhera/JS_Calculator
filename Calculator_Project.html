@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculator Project</title>
+
+    <style>
+      * {
+        user-select: none;
+        /*to not allow user to select anything (like numbers written on buttons)
+        it was interuppting as sometimes no's on button were selecting on clicking.*/
+      }
+      #container {
+        background-color: rgb(243, 222, 243);
+        width: 750px;
+        height: 600px;
+        margin: auto;
+        margin-top: 80px;
+      }
+      #calc {
+        background-color: rgb(53, 48, 48);
+        height: 40px;
+        color: white;
+        text-align: center;
+        margin: 10px 10px 20px 10px;
+        border-radius: 2%;
+      }
+      #display {
+        height: 100px;
+        background-color: rgb(179, 179, 243);
+        border-radius: 2%;
+        margin: 8px 10px 15px 10px;
+        opacity: 0.7;
+        display: flex;
+        align-items: flex-end;
+        justify-content: flex-end;
+        color: blue;
+        font-size: 4.3rem;
+      }
+      #keysSpace {
+        height: 420px;
+        margin: 2px;
+        padding: 1px;
+        margin: 0px 10px 10px 10px;
+        box-sizing: border-box;
+
+        display: flex;
+        flex-flow: row wrap;
+    justify-content: space-around;
+      }
+      .button {
+        background-color: white;
+        /* display: inline-block; */
+        width: 24.57%;
+        height: 17.5%;
+        font-size: 3em;
+        text-align: center;
+        vertical-align: 38px;
+        cursor: pointer;
+        box-sizing: border-box;
+        box-shadow: -1.5px 3px 2px grey;
+
+        display: flex;
+        align-items: center;
+    justify-content: center;
+      }
+      .button:active {
+        box-shadow: none;
+        position: relative;
+        top: 3px;
+      }
+      .zero {
+        width: 49.7%;
+      }
+      .redbg {
+        background-color: rgb(247, 18, 63);
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <div id="calc"><h1>Calculator By Ankush Khera</h1></div>
+      <div id="display"></div>
+      <div id="keysSpace">
+        <div class="button" data-value="AC"><b>AC</b></div>
+        <div class="button" data-value="sign">+/-</div>
+        <div class="button" data-value="%">%</div>
+        <div class="button redbg" data-value="/">/</div>
+        <div class="button" data-value="7">7</div>
+        <div class="button" data-value="8">8</div>
+        <div class="button" data-value="9">9</div>
+        <div class="button redbg" data-value="*">*</div>
+        <div class="button" data-value="4">4</div>
+        <div class="button" data-value="5">5</div>
+        <div class="button" data-value="6">6</div>
+        <div class="button redbg" data-value="-">-</div>
+        <div class="button" data-value="1">1</div>
+        <div class="button" data-value="2">2</div>
+        <div class="button" data-value="3">3</div>
+        <div class="button redbg" data-value="+">+</div>
+        <div class="button zero" data-value="0">0</div>
+        <div class="button" data-value=".">.</div>
+        <div class="button redbg" data-value="=">=</div>
+      </div>
+    </div>
+
+    <script>
+      var buttons = document.getElementsByClassName("button");
+      var display = document.getElementById("display");
+      var operand1 = 0;
+      var operand2 = null;
+      var operator = null;
+      function isOperator(value) {
+        return value == "+" || value == "-" || value == "*" || value == "/";
+      }
+
+      for (var i = 0; i < buttons.length; i++) {
+        buttons[i].addEventListener("click", function () {
+          var value = this.getAttribute("data-value");
+          var text = display.textContent.trim();
+          if (isOperator(value)) {
+            operator = value;
+            operand1 = parseFloat(text);
+            display.textContent = "";
+          } else if (value == "AC") {
+            display.textContent = "";
+          } else if (value == "sign") {
+            operand1 = parseFloat(text);
+            operand1 = -1 * operand1;
+            display.textContent = operand1;
+          } else if (value == "%") {
+            operand1 = parseFloat(text);
+            operand1 = operand1 / 100;
+            display.textContent = operand1;
+          } else if (value == ".") {
+            if (text.length && !text.includes(".")) {
+              display.textContent = text + ".";
+            }
+          } else if (value == "=") {
+            operand2 = parseFloat(text);
+            var result = eval(operand1 + " " + operator + " " + operand2);
+            if (result) {
+              display.textContent = result;
+              operand1 = result;
+              operand2 = null;
+              operator = null;
+            }
+          } else {
+            display.textContent += value;
+          }
+        });
+      }
+    </script>
+  </body>
+</html>
